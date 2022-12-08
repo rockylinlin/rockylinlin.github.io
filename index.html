@@ -9,8 +9,8 @@
     <title>首頁</title>
     <style>
         header,nav{
-    height: 50px;
-    background-color: #f5511fbd}
+            height: 50px;
+            background-color: aquamarine}
 
         main{
             display: flex;
@@ -19,15 +19,41 @@
         article{
             background-color: aquamarine;
             width: 70%;
+            margin-top: 1%;
+            margin-right: 5%;
+        }
+        aside{
+            background-color: aquamarine;
+            width: 25%;
+            margin-top: 1%;
+        }
+        footer{
+            height: 100px;
+            background-color: #ff8560bd;
+            margin-top: 1%;
+        }
+        .col-1{
+            background-color: aquamarine;
+        }
+        #header{
+            height: 50px;
+            background-color: aquamarine;
+        }
+        .nav{
+            height: 50px;
+            margin-top: 1%;
         }
     </style>
     <link rel="stylesheet" href="css/style1208.css">
 </head>
 <body>
-    <header style="background-color: #fc8e8e">
+    <!--行內元素-->
+    <!--<span style="background-color: rgb(204, 73, 73);">hellooo</span>-->
+    <!--區塊元素-->
+    <header id="header">
         Rockylin的第一個家
     </header>
-    <nav>
+    <nav class="col-1 nav">
         navv
     </nav>
     <main>
@@ -44,7 +70,7 @@
             asidee
         </aside>
     </main>
-    <footer>
+    <footer class="col-1">
         enddddd
     </footer>
 </body>
