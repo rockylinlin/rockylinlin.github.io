@@ -1,0 +1,14 @@
+/*註解*/
+header,nav{
+    height: 50px;
+    background-color: #ff8560bd
+}
+
+h2{
+    color: #cf8255;
+    font-size: 30px;
+}
+p{
+    color: #333333;
+    font-size: 30px;
+}
