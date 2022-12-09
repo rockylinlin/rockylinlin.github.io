@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,44 +9,109 @@
     <meta name="keywords" content="關鍵字123456789">
     <title>首頁</title>
     <style>
-        header,nav{
-            height: 50px;
-            background-color: aquamarine}
+        * {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            vertical-align: baseline;
+            background: transparent;
+            font-size: 0.75rem;
+            font-weight: normal;
+            line-height: 1.86em;
+            word-spacing: 1px;
+            letter-spacing: 1px;
+        }
 
-        main{
+        html {
+            font-size: 16px;
+        }
+
+        /**/
+        header,
+        nav {
+            height: 50px;
+            background-color: aquamarine
+        }
+
+        main {
             display: flex;
             flex-direction: row;
         }
-        article{
+
+        article {
             background-color: aquamarine;
             width: 70%;
             margin-top: 1%;
             margin-right: 5%;
         }
-        aside{
+
+        aside {
             background-color: aquamarine;
             width: 25%;
             margin-top: 1%;
         }
-        footer{
+
+        footer {
             height: 100px;
             background-color: #ff8560bd;
             margin-top: 1%;
         }
-        .col-1{
+
+        .col-1 {
             background-color: aquamarine;
         }
-        #header{
+
+        #header {
             height: 50px;
             background-color: aquamarine;
         }
-        .nav{
+
+        /*導航列*/
+        .nav {
             height: 50px;
             margin-top: 1%;
+        }
+
+        .btn {
+            margin: 0.25rem .125rem;
+        }
+
+        .btn {
+            display: inline-block;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #212529;
+            text-align: center;
+            text-decoration: none;
+            vertical-align: middle;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            background-color: transparent;
+            border: 1px solid transparent;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            border-radius: 0.25rem;
+            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        }
+
+        .btn-primary:hover {
+            color: rgb(0, 0, 0);
+            background-color: #ffe4d7;
+            border-color: #0d6efd;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background-color: #ff834a;
+            border-color: #0d6efd;
         }
     </style>
     <link rel="stylesheet" href="css/style1208.css">
 </head>
+
 <body>
     <!--行內元素-->
     <!--<span style="background-color: rgb(204, 73, 73);">hellooo</span>-->
@@ -53,8 +119,13 @@
     <header id="header">
         Rockylin的第一個家
     </header>
-    <nav class="col-1 nav">
-        navv
+    <nav class="col-1 nav ">
+        <ul>
+            <li><a href="#" class="btn btn-primary btn-sm">公司介紹</a></li>
+            <li><a href="#" class="btn btn-primary btn-sm">人員組織</a></li>
+            <li><a href="#" class="btn btn-primary btn-sm">服務提供</a></li>
+            <li><a href="#" class="btn btn-primary btn-sm">聯絡我們</a></li>
+        </ul>
     </nav>
     <main>
         <article>
@@ -70,8 +141,10 @@
             asidee
         </aside>
     </main>
+    
     <footer class="col-1">
         enddddd
     </footer>
 </body>
+
 </html>
