@@ -13,6 +13,19 @@
 
     <title>表單試做</title>
 
+
+    <style>
+        input:invalid,
+        select:invalid,
+        textarea:invalid,
+        input:focus:invalid,
+        select:focus:invalid,
+        textarea:focus:invalid {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 .25rem rgb(255, 252, 56)
+        }
+    </style>
+
 </head>
 
 <body>
@@ -22,135 +35,153 @@
             <!--<input type="text" name="name" value="" class='' id="name">
         <input type="submit" value="send">-->
 
-            <!-- input text 文字方塊(單行)-->
-            <div class="mb-3">
-                <label for="name" class="form-label">姓名</label>
-                <input type="text" name='name' value='' class="form-control" id="name" aria-describedby="nameHelp" required>
-                <div id="nameHelp" class="form-text">請輸入姓名(網頁無障礙語法)</div>
-            </div>
+            <div class="row">
+                <!-- input text 文字方塊(單行)-->
+                <div class="col-md-3 mb-3">
+                    <label for="name" class="form-label">姓名</label>
+                    <input type="text" name='name' value='' class="form-control" id="name" aria-describedby="nameHelp" required>
+                    <!--oninvalid="setCustomValidity('這個欄位必填唷');" oninput="setCustomValidity('');"自訂提醒
+                必填文字-->
 
-            <!-- input url 網址 -->
-            <div class="mb-3">
-                <label for="url" class="form-label">網址</label>
-                <input type="url" name="url" value='' class="form-control" id="url" aria-describedby="urlHelp">
-                <div id="urlHelp" class="form-text">請輸入網址</div>
-            </div>
-
-            <!-- input email EMAIL-->
-            <div class="mb-3">
-                <label for="email" class="form-label">EMAIL</label>
-                <input type="email" name="email" value='' class="form-control" id="email" aria-describedby="emailHelp">
-                <div id="emailHelp" class="form-text">請輸入EMAIL</div>
-            </div>
-
-            <!-- input password 密碼 -->
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" value='' class="form-control" id="password">
-            </div>
-
-            <!-- input date 日期方塊 -->
-            <div class="mb-3">
-                <label for="date" class="form-label">日期方塊</label>
-                <input type="date" name="date" value='' class="form-control" id="date">
-            </div>
-
-            <!-- input date 年月方塊 -->
-            <div class="mb-3">
-                <label for="month" class="form-label">年月方塊</label>
-                <input type="month" name="month" value='' class="form-control" id="month">
-            </div>
-
-            <!-- input week 年週方塊-->
-            <div class="mb-3">
-                <label for="week" class="form-label">年週方塊</label>
-                <input type="week" name="week" value='' class="form-control" id="week">
-            </div>
-
-            <!-- input number 數字方塊-->
-            <div class="mb-3">
-                <label for="number" class="form-label">數字方塊</label>
-                <input type="number" name="number" value='' class="form-control" id="number">
-            </div>
-
-            <!-- input color 顏色選擇器-->
-            <div class="mb-3">
-                <label for="color" class="form-label">顏色選擇器</label>
-                <input type="color" name="color" value='' class="form-control" id="color">
-            </div>
-
-            <!-- input search 搜尋方塊-->
-            <div class="mb-3">
-                <label for="search" class="form-label">搜尋方塊</label>
-                <input type="search" name="search" value='' class="form-control" id="search">
-            </div>
-
-            <!-- input range 滑動方塊-->
-            <div class="mb-3">
-                <label for="range" class="form-label">滑動方塊</label>
-                <input type="range" name="range" value='' class="form-control" id="range" min="0" max="100" value="90" step="1">
-            </div>
-            <!-- 單選 -->
-            <div class="mb-3">
-                <label class="form-label w-100">單選</label>
-                <div class="form-check form-check-inline">
-                    <input type="radio" name="radio" value='單選1' class="form-check-input" id="radio_1">
-                    <label class="form-check-label" for="radio_1">單選1</label>
+                    <!--<div id="nameHelp" class="form-text">請輸入姓名(網頁無障礙語法)</div>-->
                 </div>
-                <div class="form-check form-check-inline">
-                    <input type="radio" name="radio" value='單選2' class="form-check-input" id="radio_2" checked>
-                    <label class="form-check-label" for="radio_2">單選2</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input type="radio" name="radio" value='單選3' class="form-check-input" id="radio_3">
-                    <label class="form-check-label" for="radio_3">單選3</label>
-                </div>
-            </div>
-            <!-- 多選 -->
-            <div class="mb-3">
-                <label class="form-label w-100">多選</label>
-                <div class="form-check form-check-inline">
-                    <input type="checkbox" name="checkbox" value='多選1' class="form-check-input" id="checkbox_1">
-                    <label class="form-check-label" for="checkbox_1">多選1</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input type="checkbox" name="checkbox" value='多選2' class="form-check-input" id="checkbox_2" checked>
-                    <label class="form-check-label" for="checkbox_2">多選2</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input type="checkbox" name="checkbox" value='多選3' class="form-check-input" id="checkbox_3">
-                    <label class="form-check-label" for="checkbox_3">多選3</label>
-                </div>
-            </div>
 
-            <!-- 下拉選單 -->
-            <div class="mb-3">
-                <label class="form-label">下拉選單-晚餐</label>
-                <select name="select" class="form-select" id="select">
-                    <option value="下拉選單1" selected>便當</option>
-                    <option value="下拉選單2">泡麵</option>
-                    <option value="下拉選單3">壽喜燒</option>
-                </select>
-            </div>
+                <!-- input url 網址 -->
+                <div class="col-sm-3 mb-3">
+                    <label for="url" class="form-label">網址</label>
+                    <input type="url" name="url" value='' class="form-control" id="url" aria-describedby="urlHelp">
+                    <div id="urlHelp" class="form-text">請輸入網址</div>
+                </div>
 
-            <!-- 選單(多選) -->
-            <div class="mb-3">
-                <label class="form-label">下拉選單(多選)</label>
-                <select name="select_m" class="form-select" id="select_m" multiple>
-                    <option value="下拉選單(多選)1">下拉選單(多選)1</option>
-                    <option value="下拉選單(多選)2" selected>下拉選單(多選)2</option>
-                    <option value="下拉選單(多選)3">下拉選單(多選)3</option>
-                </select>
-            </div>
-            
-            <!-- 文字區域(多行) -->
-            <div class="mb-3">
-                <label class="form-label">文字區域</label>
-                <textarea name="textarea" class="form-control" id="textarea" rows="5">文字區域</textarea>
-            </div>
-            <button type="submit" class="btn btn-warning w-100">送出</button>
+                <!-- input email EMAIL-->
+                <div class="col-sm-3 mb-3">
+                    <label for="email" class="form-label">EMAIL</label>
+                    <input type="email" name="email" value='' class="form-control" id="email" aria-describedby="emailHelp" required>
+                    <div id="emailHelp" class="form-text">請輸入EMAIL</div>
+                </div>
+
+                <!-- input password 密碼 -->
+                <div class="col-sm-3 mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" name="password" value='' class="form-control" id="password">
+                </div>
+
+                <!-- input date 日期方塊 -->
+                <div class="col-sm-3 mb-3">
+                    <label for="date" class="form-label">日期方塊</label>
+                    <input type="date" name="date" value='' class="form-control" id="date">
+                </div>
+
+                <!-- input date 年月方塊 -->
+                <div class="col-sm-3 mb-3">
+                    <label for="month" class="form-label">年月方塊</label>
+                    <input type="month" name="month" value='' class="form-control" id="month">
+                </div>
+
+                <!-- input week 年週方塊-->
+                <div class="col-sm-3 mb-3">
+                    <label for="week" class="form-label">年週方塊</label>
+                    <input type="week" name="week" value='' class="form-control" id="week">
+                </div>
+
+                <!-- input number 數字方塊-->
+                <div class="col-sm-3 mb-3">
+                    <label for="number" class="form-label">數字方塊</label>
+                    <input type="number" name="number" value='' class="form-control" id="number">
+                </div>
+
+                <!-- input color 顏色選擇器-->
+                <div class="col-sm-3 mb-3">
+                    <label for="color" class="form-label">顏色選擇器</label>
+                    <input type="color" name="color" value='#000000' class="form-control" id="color">
+                </div>
+
+                <!-- input search 搜尋方塊-->
+                <div class="col-sm-3 mb-3">
+                    <label for="search" class="form-label">搜尋方塊</label>
+                    <input type="search" name="search" value='' class="form-control" id="search">
+                </div>
+
+                <!-- input range 滑動方塊-->
+                <div class="col-sm-3 mb-3">
+                    <label for="range" class="form-label">滑動方塊</label>
+                    <input type="range" name="range" value='' class="form-control" id="range" min="0" max="100" value="90" step="1">
+                </div>
+                <!-- 單選 -->
+                <div class="col-sm-12 mb-3">
+                    <label class="form-label w-100">單選</label>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" name="radio" value='單選1' class="form-check-input" id="radio_1" required>
+                        <label class="form-check-label" for="radio_1">單選1</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" name="radio" value='單選2' class="form-check-input" id="radio_2">
+                        <label class="form-check-label" for="radio_2">單選2</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" name="radio" value='單選3' class="form-check-input" id="radio_3">
+                        <label class="form-check-label" for="radio_3">單選3</label>
+                    </div>
+                </div>
+                <!-- 多選 -->
+                <div class="col-sm-12 mb-3">
+                    <label class="form-label w-100">多選</label>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="checkbox" value='多選1' class="form-check-input" id="checkbox_1">
+                        <label class="form-check-label" for="checkbox_1">多選1</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="checkbox" value='多選2' class="form-check-input" id="checkbox_2" checked>
+                        <label class="form-check-label" for="checkbox_2">多選2</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" name="checkbox" value='多選3' class="form-check-input" id="checkbox_3">
+                        <label class="form-check-label" for="checkbox_3">多選3</label>
+                    </div>
+                </div>
+
+                <!-- 下拉選單 -->
+                <div class="col-sm-6 mb-3">
+                    <label class="form-label">下拉選單-晚餐</label>
+                    <select name="select" class="form-select" id="select">
+                        <option value="下拉選單1" selected>便當</option>
+                        <option value="下拉選單2">泡麵</option>
+                        <option value="下拉選單3">壽喜燒</option>
+                    </select>
+                </div>
+
+                <!-- 選單(多選) -->
+                <div class="col-sm-6 mb-3">
+                    <label class="form-label">下拉選單(多選)</label>
+                    <select name="select_m" class="form-select" id="select_m" multiple required>
+                        <option value="下拉選單(多選)1">下拉選單(多選)1</option>
+                        <option value="下拉選單(多選)2">下拉選單(多選)2</option>
+                        <option value="下拉選單(多選)3">下拉選單(多選)3</option>
+                    </select>
+                </div>
+
+                <!-- 文字區域(多行) -->
+                <div class="col-sm-12 mb-3">
+                    <label class="form-label">文字區域</label>
+                    <textarea name="textarea" class="form-control" id="textarea" rows="5">文字區域</textarea>
+                </div>
+
+                <!--隱藏-->
+                <input type="hidden" name="op" value="set_sheet" class="form-control" id="op">
+
+                <button type="submit" class="btn btn-warning w-100">送出</button>
         </form>
+        </div>
     </main>
+    <script>
+        window.onload = function() {
+            let box = document.querySelector('.container');
+            box.insertAdjacentHTML("afterend", "<div class='text-center mt-3'>container寬度：" + box.clientWidth + "px</div>" + "<div class='text-center mt-3'>網頁可見區域寬：" + document.body.clientWidth + "px</div>");
+
+
+
+        }
+    </script>
 </body>
 
 </html>
