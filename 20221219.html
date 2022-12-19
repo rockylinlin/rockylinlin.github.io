@@ -43,7 +43,7 @@
             <!-- 隱藏-->
             <input type="hidden" name='op' value='set_sheet' id="op">
 
-            <input type="hidden" name='callback_url' value='http://127.0.0.1:5500/20221219.html' id="callback_url">
+            <input type="hidden" name='callback_url' value='' id="callback_url">
             <button type="submit" class="btn btn-primary w-100" id="submit">送出</button>
 
         </form>
@@ -52,6 +52,10 @@
 
     <script>
         window.onload = function() {
+            // let url = window.location.href;
+            let callback_url = document.getElementById('callback_url');
+            callback_url.value = window.location.href;
+
             let submitBtn = document.getElementById('submit');
             submitBtn.onclick = function() { //監聽 submit
 
