@@ -1,0 +1,44 @@
+let e = e.parameter.callback_url
+
+e['parameter']['callback_url']
+{"contentLength":368,
+"contextPath":"",
+"postData":{"contents":"name=%E9%99%B3%E6%9E%97&url=&email=&password=&date=&month=&week=&color=%23000000&number=&search=&radio=%E5%96%AE%E9%81%B81&checkbox=%E8%A4%87%E9%81%B82&checkbox=%E8%A4%87%E9%81%B83&select=%E4%B8%8B%E6%8B%89%E9%81%B8%E5%96%AE1&select_m=%E4%B8%8B%E6%8B%89%E9%81%B8%E5%96%AE%28%E5%A4%9A%E9%81%B8%291&op=set_sheet&callback_url=http%3A%2F%2F127.0.0.1%3A5500%2F20221219.html","length":368,"name":"postData","type":"application/x-www-form-urlencoded"},
+"parameters":{
+    "week":[""],
+    "select_m":["下拉選單(多選)1"],
+    "radio":["單選1"],
+    "search":[""],
+    "color":["#000000"],
+    "email":[""],
+    "url":[""],
+    "checkbox":["複選2","複選3"],
+    "op":["set_sheet"],
+    "date":[""],
+    "select":["下拉選單1"],
+    "password":[""],
+    "number":[""],
+    "month":[""],
+    "callback_url":["http://127.0.0.1:5500/20221219.html"],
+    "name":["陳林"]
+    },
+"queryString":"",
+"parameter":{
+    "email":"",
+    "name":"陳林",
+    "color":"#000000",
+    "date":"",
+    "search":"",
+    "week":"",
+    "url":"",
+    "number":"",
+    "op":"set_sheet",
+    "select":"下拉選單1",
+    "checkbox":"複選2",
+    "callback_url":"http://127.0.0.1:5500/20221219.html",
+    "select_m":"下拉選單(多選)1",
+    "month":"",
+    "radio":"單選1",
+    "password":""
+    }
+}
