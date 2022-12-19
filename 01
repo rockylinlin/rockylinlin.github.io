@@ -1,6 +1,8 @@
 let e = e.parameter.callback_url
 
-e['parameter']['callback_url']
+// e['parameter']['callback_url']
+
+e.parameters.callback_url[0]
 {"contentLength":368,
 "contextPath":"",
 "postData":{"contents":"name=%E9%99%B3%E6%9E%97&url=&email=&password=&date=&month=&week=&color=%23000000&number=&search=&radio=%E5%96%AE%E9%81%B81&checkbox=%E8%A4%87%E9%81%B82&checkbox=%E8%A4%87%E9%81%B83&select=%E4%B8%8B%E6%8B%89%E9%81%B8%E5%96%AE1&select_m=%E4%B8%8B%E6%8B%89%E9%81%B8%E5%96%AE%28%E5%A4%9A%E9%81%B8%291&op=set_sheet&callback_url=http%3A%2F%2F127.0.0.1%3A5500%2F20221219.html","length":368,"name":"postData","type":"application/x-www-form-urlencoded"},
