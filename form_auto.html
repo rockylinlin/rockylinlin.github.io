@@ -44,44 +44,26 @@
         <form action="https://script.google.com/macros/s/AKfycbwtDqZiw3RSzAksn5TaFedWu_V0GGa51UrDXk9UVswEBCg_9bF18Hc9M0uuNxsxNpZg/exec" method="post">
             <div class="row">
 
-                <!-- 多選 -->
-                <div class="col-sm-12 mb-3">
-                    <label class="form-label w-100">多選</label>
 
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" name="checkbox" value="多選1" class="form-check-input checkbox" id="checkbox_1">
-                        <label class="form-check-label" for="checkbox_1">多選1</label>
-                    </div>
-
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" name="checkbox" value="多選2" class="form-check-input checkbox" id="checkbox_2" checked>
-                        <label class="form-check-label" for="checkbox_2">多選2</label>
-                    </div>
-
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" name="checkbox" value="多選3" class="form-check-input checkbox" id="checkbox_3">
-                        <label class="form-check-label" for="checkbox_3">多選3</label>
-                    </div>
-                </div>
 
             </div>
 
 
         </form>
 
-        <form action="" class="border border-success">
+        <form action="https://script.google.com/macros/s/AKfycbwtDqZiw3RSzAksn5TaFedWu_V0GGa51UrDXk9UVswEBCg_9bF18Hc9M0uuNxsxNpZg/exec" class="" method="post">
             <div class="row" id="form_item">
 
             </div>
 
-            <!-- 隱藏-->
-            <input type="hidden" name='op' value='set_sheet' class="form-control" id="op">
             <button type="submit" class="btn btn-primary w-100" id="submit">送出</button>
         </form>
     </main>
 
     <script>
         window.onload = function() {
+
+
             let submitBtn = document.getElementById('submit');
             submitBtn.onclick = function() {
 
@@ -106,7 +88,7 @@
                     type: 'url',
                     name: 'url',
                     value: '',
-                    valid: 'required', //required
+                    valid: '', //required
                     option: '',
                     width: '3'
                 },
@@ -115,7 +97,7 @@
                     type: 'email',
                     name: 'email',
                     value: '',
-                    valid: 'required', //required
+                    valid: '', //required
                     option: '',
                     width: '3'
                 },
@@ -211,12 +193,30 @@
                 },
                 {
                     label: '評價建議',
-                    type: 'textarea',
+                    type: '段落',
                     name: 'textarea',
-                    value: '',
+                    value: '123',
                     valid: '', //required
-                    option: '留下建議吧',
+                    option: '',
                     width: '12'
+                },
+                {
+                    label: '口味',
+                    type: 'checkbox',
+                    name: 'checkbox',
+                    value: '123',
+                    valid: 'required', //required
+                    option: '香草|薄荷|巧克力|蔓越莓',
+                    width: '12'
+                },
+                {
+                    label: 'callback_url',
+                    type: 'hidden',
+                    name: 'callback_url',
+                    value: 'set_sheet',
+                    valid: '', //required
+                    option: '',
+                    width: '3'
                 },
             ];
             let form_item = document.getElementById('form_item');
@@ -312,27 +312,47 @@
                         </select>
                     </div>`;
 
-                }else if(stru[i]['type'] === 'textarea'){
+                }else if(stru[i]['type'] === '段落'){
 
                     form_item_html += `
                     <!-- 文字區域(多行) -->
                     <div class="col-sm-${stru[i]['width']} mb-3">
-                        <label class="form-label">文字區域</label>
-                        <textarea name="${stru[i]['name']}" class="form-control" id="${stru[i]['name']}" rows="5" >${stru[i]['option']}
-                        </textarea>
+                        <label class="form-label">${stru[i]['label']}</label>
+                        <textarea name="${stru[i]['name']}" class="form-control" id="${stru[i]['name']}" rows="5" ${stru[i]['valid']}>${stru[i]['value']}</textarea>
                     </div>`;
 
+                }else if(stru[i]['type'] === 'checkbox'){
+                    options = stru[i]['option'].split('|');
+                    options_html = '';
+                    //三元運算
+                    let required = stru[i]['valid'] ? `oninput="renderCheckbox('${stru[i]['name']}')"` : '';
 
-
-
+                    for(let j in options){
+                        options_html += `
+                        <div class="form-check form-check-inline">
+                            <input type="${stru[i]['type']}" name="${stru[i]['name']}" value="${options[j]}" class="form-check-input checkbox" id="${stru[i]['name']}_${j}" ${stru[i]['valid']} ${required}>
+                            <label class="form-check-label" for="${stru[i]['name']}_${j}">${options[j]}</label>
+                        </div>
+                        `;
+                    }
+                    form_item_html += `
+                    <!-- 多選 -->
+                    <div class="col-sm-${stru[i]['width']} mb-3">
+                        <label class="form-label w-100">${stru[i]['label']}</label>
+                        ${options_html}
+                    </div>`;
+                }else if(stru[i]['type'] === 'hidden'){
+                    form_item_html += `<!-- 隱藏-->
+                        <input type="${stru[i]['type']}" name="${stru[i]['name']}" value="${stru[i]['value']}" class="form-control" id="${stru[i]['name']}">`;
 
                 }
 
             }
-            console.log(form_item);
+            // console.log(form_item);
 
             form_item.innerHTML = form_item_html;
-
+            let callback_url = document.getElementById('callback_url');
+            callback_url.value = window.location.href;
 
             // let form_item = '';
             // let option, option_item;
@@ -343,7 +363,52 @@
             // console.log(form_item_id)
             // form_item_id.innerHTML = form_item;
         }
+        /*
+        渲染畫面
+        */
+        function renderCheckbox(name){
+            // removeRequired(name);
+            // setRequired(name);
+            // console.log(isAtLeastOneChecked(name))
+            if(isAtLeastOneChecked(name)){
+                removeRequired(name);
+                }else{
+                setRequired(name);
+            }
+        }
+
+        /*
+            設定屬性required
+        */
+        function setRequired(name){
+            let checkboxes = Array.from(document.getElementsByName(name));
+            for(let i in checkboxes){
+                checkboxes[i].setAttribute('required', true);
+            }
+        }
+        /*======================
+            移除屬性required
+        ======================*/
+        function removeRequired(name){
+            let checkboxes = Array.from(document.getElementsByName(name));
+            for(let i in checkboxes){
+                checkboxes[i].removeAttribute('required');
+            }
+            // console.log(checkboxes);
+        }
+        /*
+            判斷是否有勾選
+        */
+        function isAtLeastOneChecked(name){
+            let checkboxes = Array.from(document.getElementsByName(name));
+            return checkboxes.some(function(item) {
+                return item.checked;
+            });
+        }
+
     </script>
+
+
 
 
 </body>
