@@ -68,25 +68,6 @@
                     </div>
                 </div>
 
-                <!-- 下拉選單 -->
-                <div class="col-sm-6 mb-3">
-                    <label class="form-label">下拉選單</label>
-                    <select name="select" class="form-select" id="select">
-                        <option value="下拉選單1">下拉選單1</option>
-                        <option value="下拉選單2" selected>下拉選單2</option>
-                        <option value="下拉選單3">下拉選單3</option>
-                    </select>
-                </div>
-
-                <!-- 下拉選單(多選) -->
-                <div class="col-sm-6 mb-3">
-                    <label class="form-label">下拉選單(多選)</label>
-                    <select name="select_m" class="form-select" id="select_m" multiple>
-                        <option value="下拉選單(多選)1">下拉選單(多選)1</option>
-                        <option value="下拉選單(多選)2" selected>下拉選單(多選)2</option>
-                        <option value="下拉選單(多選)3">下拉選單(多選)3</option>
-                    </select>
-                </div>
 
                 <!-- 文字區域(多行) -->
                 <div class="col-sm-12 mb-3">
@@ -98,7 +79,7 @@
 
         </form>
 
-        <form action="" class="bg-warning">
+        <form action="" class="border border-success">
             <div class="row" id="form_item">
 
             </div>
@@ -120,6 +101,7 @@
             box.insertAdjacentHTML("afterend", "<div class='text-center mt-3'>container寬度：" + box.clientWidth + "px</div>" + "<div class='text-center mt-3'>網頁可見區域寬：" + document.body.clientWidth + "px</div>");
 
             // 整理出來的結構資料
+
             let stru = [{
                     label: '請填入姓名',
                     type: 'text',
@@ -215,15 +197,33 @@
                     type: 'radio',
                     name: 'radio',
                     value: '',
-                    valid: '', //required
+                    valid: 'required', //required
                     option: '八寶|紅豆|綠豆',
-                    width: '12'
+                    width: '6'
+                },
+                {
+                    label: '衣服尺寸',
+                    type: 'select',
+                    name: 'size',
+                    value: '',
+                    valid: 'required', //required
+                    option: 'XS|S|L|XL|XXL',
+                    width: '6'
+                },
+                {
+                    label: '衣服顏色',
+                    type: 'select_m',
+                    name: 'ccolor',
+                    value: '',
+                    valid: 'required', //required
+                    option: '酒紅|藏藍|奶黃|軍綠|薰紫',
+                    width: '6'
                 },
             ];
             let form_item = document.getElementById('form_item');
 
-            let form_item_html = '';
-            let options
+            let form_item_html = options_html = '';
+            let options;
             for (let i in stru) {
                 if (stru[i]['type'] === 'text' ||
                     stru[i]['type'] === 'url' ||
@@ -244,28 +244,77 @@
                     </div>`;
                 }else if(stru[i]['type'] === 'radio'){
                     options = stru[i]['option'].split('|');
+                    options_html = ''
+                    /*
+                        ['八寶','紅豆','綠豆']
+                        options[0]
+                        options[1]
+                        options[2]
+                        options[j]
+
+                    */
+                    for(let j in options){
+                        //三元運算
+                        // console.log(j, typeof j)
+                        let required = (j=='0') ? stru[i]['valid'] : '' ;
+                        //j=='0'是條件
+                        options_html += `
+                        <div class="form-check form-check-inline">
+                            <input type="${stru[i]['type']}" name="${stru[i]['name']}" value="${options[j]}" class="form-check-input" id="${stru[i]['name']}_${j}" ${required} >
+                            <label class="form-check-label" for="${stru[i]['name']}_${j}">${options[j]}</label>
+                        </div>`;
+                    };
+
                     // console.log(options);
 
-                    form_item_html +=`
+                    //跑迴圈
+                    //選項html
+                    form_item_html += `
                     <!-- 單選 -->
                     <div class="col-sm-${stru[i]['width']} mb-3">
                     <label class="form-label w-100">${stru[i]['label']}</label>
-
-                        <div class="form-check form-check-inline">
-                            <input type="${stru[i]['type']}" name="${stru[i]['name']}" value="單選1" class="form-check-input" id="radio_1" required>
-                            <label class="form-check-label" for="radio_1">單選1</label>
-                        </div>
-
-                        <div class="form-check form-check-inline">
-                            <input type="${stru[i]['type']}" name="${stru[i]['name']}" value="單選2" class="form-check-input" id="radio_2">
-                            <label class="form-check-label" for="radio_2">單選2</label>
-                        </div>
-
-                        <div class="form-check form-check-inline">
-                            <input type="${stru[i]['type']}" name="${stru[i]['name']}" value="單選3" class="form-check-input" id="radio_3">
-                            <label class="form-check-label" for="radio_3">單選3</label>
-                        </div>
+                    ${options_html}
                     </div>`;
+
+                }else if(stru[i]['type'] === 'select'){
+                    //1.先替換變數
+                    //2.將stru[i]['option'] =>['下拉選單11', '下拉選單22', '下拉選單33', '下拉選單44']
+                    //3.跑迴圈
+                    options = stru[i]['option'].split('|');
+                    // console.log(options);
+                    options_html = '';
+                    for(let j in options){
+                        options_html += `
+                        <option value="${options[j]}">${options[j]}</option>`;
+
+                    }
+                    form_item_html += `
+                    <!-- 下拉選單 -->
+                    <div class="col-sm-${stru[i]['width']} mb-3">
+                        <label class="form-label">${stru[i]['label']}</label>
+                        <select name="${stru[i]['name']}" class="form-select" id="${stru[i]['name']}" ${stru[i]['valid']} >
+                            ${options_html}
+                        </select>
+                    </div>`;
+
+                }else if(stru[i]['type'] === 'select_m'){
+                    options = stru[i]['option'].split('|');
+                    options_html = '';
+                    for(let j in options){
+                        options_html += `
+                        <option value="${options[j]}">${options[j]}</option>`;
+                    }
+
+                    form_item_html += `<!-- 下拉選單(多選) -->
+                    <div class="col-sm-${stru[i]['width']} mb-3">
+                        <label class="form-label">${stru[i]['label']}</label>
+                        <select name="${stru[i]['name']}" class="form-select" id="${stru[i]['name']}" multiple ${stru[i]['valid']} >
+                            ${options_html}
+                        </select>
+                    </div>`;
+
+
+
                 }
 
             }
