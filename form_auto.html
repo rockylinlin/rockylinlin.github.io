@@ -44,10 +44,6 @@
         <form action="https://script.google.com/macros/s/AKfycbwtDqZiw3RSzAksn5TaFedWu_V0GGa51UrDXk9UVswEBCg_9bF18Hc9M0uuNxsxNpZg/exec" method="post">
             <div class="row">
 
-
-
-
-
                 <!-- 多選 -->
                 <div class="col-sm-12 mb-3">
                     <label class="form-label w-100">多選</label>
@@ -68,12 +64,6 @@
                     </div>
                 </div>
 
-
-                <!-- 文字區域(多行) -->
-                <div class="col-sm-12 mb-3">
-                    <label class="form-label">文字區域</label>
-                    <textarea name="textarea" class="form-control" id="textarea" rows="5" required>文字區域123</textarea>
-                </div>
             </div>
 
 
@@ -208,7 +198,7 @@
                     value: '',
                     valid: 'required', //required
                     option: 'XS|S|L|XL|XXL',
-                    width: '6'
+                    width: '3'
                 },
                 {
                     label: '衣服顏色',
@@ -217,7 +207,16 @@
                     value: '',
                     valid: 'required', //required
                     option: '酒紅|藏藍|奶黃|軍綠|薰紫',
-                    width: '6'
+                    width: '3'
+                },
+                {
+                    label: '評價建議',
+                    type: 'textarea',
+                    name: 'textarea',
+                    value: '',
+                    valid: '', //required
+                    option: '留下建議吧',
+                    width: '12'
                 },
             ];
             let form_item = document.getElementById('form_item');
@@ -308,10 +307,22 @@
                     form_item_html += `<!-- 下拉選單(多選) -->
                     <div class="col-sm-${stru[i]['width']} mb-3">
                         <label class="form-label">${stru[i]['label']}</label>
-                        <select name="${stru[i]['name']}" class="form-select" id="${stru[i]['name']}" multiple ${stru[i]['valid']} >
+                        <select name="${stru[i]['name']}" class="form-select" id="${stru[i]['name']}" multiple ${stru[i]['valid']} size=2>
                             ${options_html}
                         </select>
                     </div>`;
+
+                }else if(stru[i]['type'] === 'textarea'){
+
+                    form_item_html += `
+                    <!-- 文字區域(多行) -->
+                    <div class="col-sm-${stru[i]['width']} mb-3">
+                        <label class="form-label">文字區域</label>
+                        <textarea name="${stru[i]['name']}" class="form-control" id="${stru[i]['name']}" rows="5" >${stru[i]['option']}
+                        </textarea>
+                    </div>`;
+
+
 
 
 
