@@ -76,46 +76,36 @@
             let box = document.querySelector('.container');
             box.insertAdjacentHTML("afterend", "<div class='text-center mt-3'>container寬度：" + box.clientWidth + "px</div>" + "<div class='text-center mt-3'>網頁可見區域寬：" + document.body.clientWidth + "px</div>");
 
-            
-            // 整理出來的結構資料
+            //取得結構資料
+            let url ='https://script.google.com/macros/s/AKfycbyGVdPOzeVnKOORzmY-lth43zii4x5l9GHOSEeBGvHerPs5e5dJGnzUgMX5SouwZdzzWw/exec';
 
-            let stru = [{
-                    label: '繳費單位',
-                    type: 'select',
-                    name: 'unit',
-                    value: '',
-                    valid: '', //required
-                    option: '玉山|國泰|台新|自來水|天然氣',
-                    width: '3'
+            let data = {
+                op: 'api_stru_payment',
+            };
+
+            let stru;
+
+
+
+            $.ajax({
+                url: url, // 請求資料的網址
+                data: data, // 如果需要傳送資料時，則將資料設定在這裡
+                method: 'GET', // 請求資料的方式(Ex:POST / GET / PUT...等)
+                dataType: 'json', // 請求資料的類型(Ex:xml, json, script, or html...等)
+                async: false, // 預設是true=非同步,false=同步 (true時整行可省略)
+                beforeSend: function() { // 發送請求前執行的動作
+                    //......
                 },
-                {
-                    label: '繳費日期',
-                    type: 'date',
-                    name: 'date',
-                    value: '',
-                    valid: 'required', //required第一種方式min="2022-12-26" max="2022-12-31"
-                    option: '',
-                    width: '3'
+                success: function(result) { // 當成功接收到資料時
+                    stru = result;
                 },
-                {
-                    label: '繳費金額',
-                    type: 'text',
-                    name: 'money',
-                    value: '',
-                    valid: 'required', //required
-                    option: '',
-                    width: '3'
-                },
-                {
-                    label: '其他',
-                    type: 'text',
-                    name: 'ps',
-                    value: '',
-                    valid: '', //required
-                    option: '',
-                    width: '3'
-                },
-            ];
+                error: function(error) { // 當接收資料失敗時
+                    console.log(error);
+                    //......
+                }
+            });
+
+
             let form_item = document.getElementById('form_item');
 
             let form_item_html = options_html = '';
@@ -253,8 +243,8 @@
             // $("#date").prop('min','2022-12-26');
             // $("#date").prop('max','2023-01-18');
             $("#date").prop({
-                min:'2022-12-26',
-                max:'2022-12-31',
+                min: '2022-12-26',
+                max: '2022-12-31',
             });
 
             let callback_url = document.getElementById('callback_url');
@@ -283,7 +273,7 @@
             }
         }
 
-        $(function(){
+        $(function() {
 
 
         })
