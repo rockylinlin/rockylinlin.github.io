@@ -41,12 +41,12 @@
 </head>
 
 <body>
-
-
     <!-- 資料處理時畫面 -->
     <div class="d-none my-5" id="show">
         <span>資料處理中....<img src="https://i.imgur.com/pm9SKUg.gif"></span>
     </div>
+
+
 
     <main class="container">
         <h1 class="text-center mt-3">繳費通知單</h1>
@@ -98,9 +98,11 @@
                 dataType: 'json', // 請求資料的類型(Ex:xml, json, script, or html...等)
                 async: true, // 預設是true=非同步,false=同步 (true時整行可省略)
                 beforeSend: function() { // 發送請求前執行的動作
+                    $("#show").prop("class","my-5");
                     //......
                 },
                 success: function(result) { // 當成功接收到資料時
+                    $("#show").prop("class","d-none my-5");
                     let stru = result;
                     //產生表單語法
                     create_template('form-item', stru);
@@ -114,6 +116,7 @@
 
                 },
                 error: function(error) { // 當接收資料失敗時
+                    $("#show").prop("class","d-none my-5");
                     console.log(error);
                     //......
                 }
