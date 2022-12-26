@@ -41,6 +41,13 @@
 </head>
 
 <body>
+
+
+    <!-- 資料處理時畫面 -->
+    <div class="d-none my-5" id="show">
+        <span>資料處理中....<img src="https://i.imgur.com/pm9SKUg.gif"></span>
+    </div>
+
     <main class="container">
         <h1 class="text-center mt-3">繳費通知單</h1>
 
@@ -77,14 +84,11 @@
             box.insertAdjacentHTML("afterend", "<div class='text-center mt-3'>container寬度：" + box.clientWidth + "px</div>" + "<div class='text-center mt-3'>網頁可見區域寬：" + document.body.clientWidth + "px</div>");
 
             //取得結構資料
-            let url ='https://script.google.com/macros/s/AKfycbyGVdPOzeVnKOORzmY-lth43zii4x5l9GHOSEeBGvHerPs5e5dJGnzUgMX5SouwZdzzWw/exec';
+            let url = 'https://script.google.com/macros/s/AKfycbyGVdPOzeVnKOORzmY-lth43zii4x5l9GHOSEeBGvHerPs5e5dJGnzUgMX5SouwZdzzWw/exec';
 
             let data = {
                 op: 'api_stru_payment',
             };
-
-            let stru;
-
 
 
             $.ajax({
@@ -92,12 +96,22 @@
                 data: data, // 如果需要傳送資料時，則將資料設定在這裡
                 method: 'GET', // 請求資料的方式(Ex:POST / GET / PUT...等)
                 dataType: 'json', // 請求資料的類型(Ex:xml, json, script, or html...等)
-                async: false, // 預設是true=非同步,false=同步 (true時整行可省略)
+                async: true, // 預設是true=非同步,false=同步 (true時整行可省略)
                 beforeSend: function() { // 發送請求前執行的動作
                     //......
                 },
                 success: function(result) { // 當成功接收到資料時
-                    stru = result;
+                    let stru = result;
+                    //產生表單語法
+                    create_template('form-item', stru);
+                    $("#date").prop({
+                        min: '2022-12-26',
+                        max: '2023-01-31',
+                    });
+
+                    let callback_url = document.getElementById('callback_url');
+                    callback_url.value = window.location.href;
+
                 },
                 error: function(error) { // 當接收資料失敗時
                     console.log(error);
@@ -105,6 +119,12 @@
                 }
             });
 
+
+        }
+        //樣板語法
+
+        function create_template(target_id, stru) {
+            //-------------------變成函數 create_template(target_id,stru)
 
             let form_item = document.getElementById('form_item');
 
@@ -239,17 +259,16 @@
 
             form_item.innerHTML = form_item_html;
 
+
+
             //dom ->
             // $("#date").prop('min','2022-12-26');
             // $("#date").prop('max','2023-01-18');
-            $("#date").prop({
-                min: '2022-12-26',
-                max: '2022-12-31',
-            });
 
-            let callback_url = document.getElementById('callback_url');
-            callback_url.value = window.location.href;
 
+
+
+            //------------------------------------------------------------結束
             // let form_item = '';
             // let option, option_item;
 
@@ -258,7 +277,10 @@
             // let form_item_id = document.getElementById('form_item');
             // console.log(form_item_id)
             // form_item_id.innerHTML = form_item;
+
         }
+
+
         /*
         渲染畫面
         */
