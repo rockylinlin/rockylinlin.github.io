@@ -1,0 +1,410 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阿霖霖工作室-聯絡我們</title>
+</head>
+<body>
+  <!-- jquery -->
+  <script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+  <div class="container">
+    <div class="js">
+      <!-- 調用 WdatePicker.js http://www.my97.net/demo/index.htm -->
+      <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/my97datepicker@4.8.0/skin/WdatePicker.css'>
+      <script src='https://cdn.jsdelivr.net/npm/my97datepicker@4.8.0/WdatePicker.js'></script>
+      <!-- ckeditor -->
+      <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+      <!-- jquery-validation -->
+      <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/localization/messages_zh_TW.min.js"></script>
+      <style>
+        .error {
+          color: red;
+        }
+      </style>
+    </div>
+
+    <h1 class="text-center mt-3">阿霖霖工作室-聯絡我們</h1>
+    <!-- 資料處理時畫面 -->
+    <div class="d-none mt-5" id="show">
+      <span>資料處理中....<img src="https://i.imgur.com/pm9SKUg.gif"></span>
+    </div>
+    <!-- 訊息 -->
+    <div class="mt-3" id="message">
+    </div>
+    <!-- 主畫面 -->
+    <div id="main_content" class="mt-3">
+      <form id="myForm" class="form-horizontal" method="post" action>
+        <div id='form_content' class="row"></div>
+        <input type="hidden" name="op" value="api_post_row" id="api_post_row">
+        <input type="hidden" name="ofsn" value="1" id="ofsn">
+        <input type="hidden" name="callback_url" value="" id="callback_url">
+        <input type="hidden" name="callback_home_url" value="" id="callback_home_url">
+        <button type="submit" class="btn btn-primary w-100" id="submit">送出</button>
+      </form>
+    </div>
+  </div>
+  <script>
+    $(function() {
+      let ofsn = 1;
+
+      let url = "https://script.google.com/macros/s/AKfycbyoLvnWGt2VFAOtxk1LPP_mhHM5KA-r_lGu8LKRgrodAwPbmDL1APfVHNLiH9K93zaZNQ/exec";
+      let data = {
+        op: 'api_get_stru',
+        ofsn: ofsn
+      };
+
+      // 取得結構
+      let respond;
+      /*
+        result: false,
+        message: '尚未開放',
+        stru: []
+      */
+      respond = ajax_fun(url, data, 'GET');
+
+      if (respond.result) {
+        // 表單說明
+        message_template(respond);
+        let form_url = window.location.href;
+        let stru = respond.stru;
+        //表單網址
+        $('#callback_url').val(form_url);
+        //首頁網址
+        $('#callback_home_url').val(form_url.replace(window.location.pathname, ''));
+
+        create_template('form_content', stru);
+
+        //-------------------------------------------- 取得必填欄位，過濾「required」有值
+        let validate = stru.filter(function(item) {
+          return item['validate'] !== "";
+        });
+        //將規則轉成文字
+        let rules = {};
+        validate.map(function(item) {
+          if (item['validate'] == "email") {
+            rules[item['name']] = {
+              required: true,
+              email: true
+            };
+          } else {
+            rules[item['name']] = {
+              required: true
+            };
+          }
+        });
+        //將訊息轉成文字
+        let messages = {};
+        validate.map(function(item) {
+          if (item['validate'] == "email") {
+            messages[item['name']] = {
+              required: '必填',
+              email: 'email格式不正確'
+            };
+          } else {
+            messages[item['name']] = {
+              required: '必填'
+            };
+          }
+        });
+
+        $("#myForm").validate({
+          submitHandler: function(form, event) { //驗證成功執行
+            //防止重覆送出
+            $('#submit').prop('disabled', true);
+            // 阻止表格正常提交
+            event.preventDefault();
+
+            $('#show').prop("class", "my-5");
+            $('#main_content').prop("class", "d-none");
+
+            // 取得表單之值
+            let formData = {};
+            let check;
+            let v;
+            for (let i in stru) {
+              if (stru[i]['kind'] === '複選') {
+                check = $(`input[name='${stru[i]['name']}']`);
+                v = [];
+                for (let j = 0; j < check.length; j++) {
+                  if (check[j].checked) {
+                    v.push(check[j].value);
+                  }
+                }
+                formData[stru[i]['name']] = v.join(",");
+              } else if (stru[i]['kind'] === '網頁編輯器') {
+                formData[stru[i]['name']] = CKEDITOR['instances'][stru[i]['name']].getData();
+              } else {
+                formData[stru[i]['name']] = $('#' + stru[i]['name']).val();
+              }
+            }
+            data = {
+              op: 'api_post_row',
+              ofsn: ofsn,
+              formData: JSON.stringify(formData)
+            };
+            // 執行送出之語法
+            respond = ajax_fun(url, data, 'POST');
+
+            if (respond['result']) {
+              finish_template('main_content', stru, formData, respond);
+              message_template(respond);
+            } else {
+              message_template(respond);
+            }
+
+            return false;
+          },
+          rules: rules, //驗證規則
+          messages: messages //驗證訊息
+        });
+
+      } else {
+        $("#show").prop("class", "d-none");
+        $("#main_content").prop("class", "d-none");
+        message_template(respond);
+      }
+
+    });
+
+    // 傳送表單
+    function ajax_fun(url, data, type = 'POST') {
+      let respond;
+      $.ajax({
+        url: url, // 請求資料的網址
+        data: data, // 如果需要傳送資料時，則將資料設定在這裡
+        type: type, // 請求資料的方式(Ex:POST / GET / PUT...等)
+        dataType: 'json', // 請求資料的類型(Ex:xml, json, script, or html...等)
+        async: false, // 預設是true=非同步,false=同步 (true時整行可省略)
+        beforeSend: function() { // 發送請求前執行的動作
+          $("#show").prop("class", "my-5");
+        },
+        success: function(result) { // 當成功接收到資料時
+          $("#show").prop("class", "d-none my-5");
+          respond = result;
+        },
+        error: function(error) { // 當接收資料失敗時
+          $("#show").prop("class", "d-none my-5");
+          alert('ajax_fun()執行失敗，請通知管理員！');
+        }
+      });
+      return respond;
+    }
+
+    // 樣版語法
+    function create_template(target_id, stru) {
+      let form_content_html = '';
+      let options_html = '';
+      let options;
+      let validate;
+      let readme;
+      let selected;
+      let checked;
+      let values;
+      let ckeditor = [];
+
+      for (let i in stru) {
+        // 驗證
+        validate = stru[i]['validate'] ? '<span class="text-danger"> *<span>' : '';
+        // 說明
+        readme = stru[i]['readme'] ? `<span class="text-danger">(${stru[i]['readme']})<span>` : '';
+
+        if (stru[i]['fun'] === '時間戳記' || stru[i]['fun'] === '回填欄位' || stru[i]['fun'] === 'maxSn' || stru[i]['kind'] === '隱藏' || stru[i]['kind'] === 'PDF') {
+          form_content_html += `
+        <input type="hidden" name="${stru[i]['name']}" value="${stru[i]['default']}" id="${stru[i]['name']}">`;
+
+        } else if (stru[i]['kind'] === '簡答') {
+          form_content_html += `
+        <div class="col-sm-${stru[i]['form_width']} mb-3">
+          <label for="${stru[i]['name']}" class="form-label">${stru[i]['title']}${validate}${readme}</label>
+          <input type="text" name="${stru[i]['name']}" value="${stru[i]['default']}" class="form-control" id="${stru[i]['name']}">
+        </div>`;
+
+        } else if (stru[i]['kind'] === '日期時間') {
+          form_content_html += `
+        <div class="col-sm-${stru[i]['form_width']} mb-3">
+          <label for="${stru[i]['name']}" class="form-label">${stru[i]['title']}${validate}${readme}</label>
+          <input type="text" name="${stru[i]['name']}" value="${stru[i]['default']}" class="form-control" id="${stru[i]['name']}" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:ss', startDate:' %y/%M/%d %H:%m:%s'})" autocomplete="off">
+        </div>`;
+
+        } else if (stru[i]['kind'] === '日期') {
+          form_content_html += `
+        <div class="col-sm-${stru[i]['form_width']} mb-3">
+          <label for="${stru[i]['name']}" class="form-label">${stru[i]['title']}${validate}${readme}</label>
+          <input type="text" name="${stru[i]['name']}" value="${stru[i]['default']}" class="form-control" id="${stru[i]['name']}" onclick="WdatePicker({dateFmt:'yyyy/MM/dd', startDate:' %y/%M/%d'})" autocomplete="off">
+        </div>`;
+
+        } else if (stru[i]['kind'] === '時間') {
+          form_content_html += `
+        <div class="col-sm-${stru[i]['form_width']} mb-3">
+          <label for="${stru[i]['name']}" class="form-label">${stru[i]['title']}${validate}${readme}</label>
+          <input type="text" name="${stru[i]['name']}" value="${stru[i]['default']}" class="form-control" id="${stru[i]['name']}" onclick="WdatePicker({dateFmt:'HH:mm:ss', startDate:' %H:%m:%s'})" autocomplete="off">
+        </div>`;
+
+        } else if (stru[i]['kind'] === '中文日期') {
+          form_content_html += `
+        <div class="col-sm-${stru[i]['form_width']} mb-3">
+          <label for="${stru[i]['name']}" class="form-label">${stru[i]['title']}${validate}${readme}</label>
+          <input type="text" name="${stru[i]['name']}" value="${stru[i]['default']}" class="form-control" id="${stru[i]['name']}" onclick="WdatePicker({dateFmt:'yyyy年 MM月 dd日', startDate:' %y/%M/%d'})" autocomplete="off">
+        </div>`;
+
+        } else if (stru[i]['kind'] === '下拉選單') {
+          options = stru[i]['option'].split(',');
+          options_html = '';
+          for (let j in options) {
+            selected = (options[j] === stru[i]['default']) ? 'selected' : '';
+            options_html += `
+              <option value="${options[j]}" ${selected}>${options[j]}</option>`;
+          }
+
+          form_content_html += `
+            <div class="col-sm-${stru[i]['form_width']} mb-3">
+              <label class="form-label">${stru[i]['title']}${validate}${readme}</label>
+              <select name="${stru[i]['name']}" class="form-select" id="${stru[i]['name']}">
+               ${options_html}
+              </select>
+            </div>`;
+
+        } else if (stru[i]['kind'] === '段落') {
+          form_content_html += `
+            <div class="col-sm-${stru[i]['form_width']} mb-3">
+              <label class="form-label">${stru[i]['title']}${validate}${readme}</label>
+              <textarea name="${stru[i]['name']}" class="form-control" id="${stru[i]['name']}" rows="5" ${stru[i]['valid']}>${stru[i]['default']}</textarea>
+            </div>`;
+
+        } else if (stru[i]['kind'] === '單選') {
+
+        } else if (stru[i]['kind'] === '複選') {
+          options = stru[i]['option'].split(',');
+          values = stru[i]['default'].split(',')
+          options_html = '';
+
+          for (let j in options) {
+            checked = (values.indexOf(options[j]) === -1) ? "" : "checked";
+            options_html += `
+              <div class="form-check form-check-inline">
+                <input type="checkbox" name="${stru[i]['name']}" value="${options[j]}" class="form-check-input" id="${stru[i]['name']}_${j}" ${checked}>
+                <label class="form-check-label" for="${stru[i]['name']}_${j}">${options[j]}</label>
+              </div>`;
+          };
+
+          form_content_html += `
+            <div class="col-sm-${stru[i]['form_width']} mb-3">
+              <label class="form-label w-100">${stru[i]['title']}${validate}${readme}</label>
+              ${options_html}
+            </div>`;
+        } else if (stru[i]['kind'] === '網頁編輯器') {
+          ckeditor.push(stru[i]['name']);
+          form_content_html += `
+            <div class="col-sm-${stru[i]['form_width']} mb-3">
+              <label class="form-label">${stru[i]['title']}${validate}${readme}</label>
+              <textarea name="${stru[i]['name']}" class="form-control" id="${stru[i]['name']}" rows="5" ${stru[i]['valid']}>${stru[i]['default']}</textarea>
+            </div>`;
+
+        }
+
+      }
+
+      $('#' + target_id).html(form_content_html);
+
+      for (let i in ckeditor) {
+        CKEDITOR.replace(ckeditor[i]);
+        if (i == 0) {
+          CKEDITOR.config.allowedContent = true;
+        }
+      }
+    }
+
+    // 完成畫面
+    /*
+      other.push({kind: 'PDF', title: pdf['titleName'], value: pdf['pdfUrl']});
+    */
+    function finish_template(target_id, stru, row, respond) {
+      let show_html = '';
+      // console.log(respond);
+      if(respond['other'].length){
+        let other = '';
+        for(let i in respond['other']){
+          if(respond['other'][i]['kind'] === 'PDF'){//PDF
+            other += `<a href="${respond['other'][i]['value']}" target="_blank" class="btn btn-primary me-2">${respond['other'][i]['title']}</a>`;
+          }else if(respond['other'][i]['kind'] === 'update'){//回填欄位
+            other += `<a href="${respond['other'][i]['value']}" target="_blank" class="btn btn-secondary me-2">${respond['other'][i]['title']}</a>`;
+          }
+        }
+
+        if(other){
+          show_html += `
+            <div class="col-sm-12 mb-3">
+              ${other}
+            </div>`;
+        }
+      }
+
+      for (let i in stru) {
+
+        if (stru[i]['fun'] === '時間戳記' || stru[i]['fun'] === '回填欄位' || stru[i]['fun'] === 'maxSn' || stru[i]['kind'] === '隱藏' || stru[i]['kind'] === 'PDF') {
+
+        } else if (stru[i]['kind'] === '網頁編輯器') {
+          show_html += `
+            <div class="col-sm-${stru[i]['form_width']} mb-3">
+              <label class="form-label">${stru[i]['title']}</label>
+              <div class="alert alert-light border" role="alert">
+                ${row[stru[i]['name']]}
+              </div>
+            </div>`;
+
+        } else if (stru[i]['kind'] === '段落') {
+          show_html += `
+            <div class="col-sm-${stru[i]['form_width']} mb-3">
+              <label class="form-label">${stru[i]['title']}</label>
+              <div class="alert alert-light border" role="alert">
+                ${nl2br(row[stru[i]['name']])}
+              </div>
+            </div>`;
+
+        } else {
+          row[stru[i]['name']] = row[stru[i]['name']] ? row[stru[i]['name']] : '&nbsp;';
+          show_html += `
+            <div class="col-sm-${stru[i]['form_width']} mb-3">
+              <label for="${stru[i]['name']}" class="form-label">${stru[i]['title']}</label>
+              <div class="form-control">
+                ${row[stru[i]['name']]}
+              </div>
+            </div>`;
+        }
+
+      }
+
+      $('#' + target_id).html(show_html).prop('class', 'row my-5');
+    }
+
+    //訊息
+    function message_template(respond) {
+      let alert = respond.result ? 'mt-3 alert alert-secondary' : 'mt-3 alert alert-danger'
+      let html = respond.message ? respond.message : '';
+
+      $('#message').html(html).prop('class', alert);
+    }
+
+    /*============================================
+      nl2br
+    ============================================*/
+    function nl2br(str, is_xhtml) {
+      if (typeof str === 'undefined' || str === null) {
+        return '';
+      }
+      var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
+      return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+    }
+
+  </script>
+</body>
+</html>
