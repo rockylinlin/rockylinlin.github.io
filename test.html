@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <title>###</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="d-none my-5" id="show">
+            <span>資料處理中....<img src="https://i.imgur.com/pm9SKUg.gif"></span>
+        </div>
+        <div id="main">
+            <!-- 原始碼 -->
+            <!-- 套件引入 -->
+            <!-- 調用函數 -->
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/localization/messages_zh_TW.min.js"></script>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+    <script>
+        $(function() {
+            $("#myForm").validate({
+                submitHandler: function(form, event) { //驗證成功執行
+                    //防止重覆送出
+                    $('#submit').attr('disabled', true);
+                    // 阻止表格正常提交
+                    event.preventDefault();
+
+                    document.getElementById('show').setAttribute("class", "my-5");
+                    document.getElementById('main').setAttribute("class", "d-none");
+
+                    alert('表單處理，請重整再測試');
+
+                    //document.getElementById('show').setAttribute("class", "d-none");
+                    //document.getElementById('main').setAttribute("class", "my-5");
+
+                    return false;
+                },
+                rules: {
+                    'f-3': {
+                        required: true
+                    },
+                    'f-5': {
+                        required: true,
+                        email: true
+                    },
+                    'f-6': {
+                        required: true
+                    }
+                },
+                messages: {
+                    'f-3': {
+                        required: '必填'
+                    },
+                    'f-5': {
+                        required: '必填',
+                        email: 'email格式不正確'
+                    },
+                    'f-6': {
+                        required: '必填'
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

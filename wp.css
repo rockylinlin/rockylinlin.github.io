@@ -1,0 +1,6 @@
+.footer-widget-area[data-section="sidebar-widgets-footer-widget-1"] .widget-title,
+.footer-widget-area[data-section="sidebar-widgets-footer-widget-2"] .widget-title,
+.footer-widget-area[data-section="sidebar-widgets-footer-widget-3"] .widget-title,
+.footer-widget-area[data-section="sidebar-widgets-footer-widget-4"] .widget-title {
+   color: var(--ast-global-color-5);
+}
